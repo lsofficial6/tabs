@@ -1,37 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Random Search</title>
-    <style>
-        body {
-            text-align: center;
-            margin-top: 100px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+        integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+
     <script>
-        function openRandomSearch() {
+        function openRandomSearchPC() {
             var searches = [
-                "cats",
-                "dogs",
-                "pizza",
-                "space",
-                "music",
-                "casts",
-                "dogss",
-                "piszza",
-                "spasce",
-                "caats",
-                "doags",
-                "pizaza",
-                "spaace",
-                "catvs",
-                "dogvs",
-                "pizzva",
-                "spacve",
-                "carts",
-                "dorgs",
-                "pirzza",
-                "sparce",
+
                 "vb",
                 "vvb",
                 "vfb",
@@ -66,7 +44,7 @@
                 "vbiasdsvdbfbgabg",
                 "vbiasdsvdbfbgbag",
                 "vbiasdsvdbfbgbga",
-                
+
                 // Add more search queries here
             ];
 
@@ -75,34 +53,99 @@
             window.open(url, "_blank", "width=600,height=400");
         }
 
-        function openRandomSearchMultipleTimes() {
+
+
+        function openRandomSearchMultipleTimesPC() {
             for (var i = 0; i < 30; i++) {
-                setTimeout(openRandomSearch, 1000 * i); // Delay each search by 1 second
+                setTimeout(openRandomSearchPC, 1000 * i); // Delay each search by 1 second
+            }
+        }
+
+        // sencond function for mobile
+        function openRandomSearchMobile() {
+            var searches = [
+                "cats",
+                "dogs",
+                "pizza",
+                "space",
+                "music",
+                "casts",
+                "dogss",
+                "piszza",
+                "spasce",
+                "caats",
+                "doags",
+                "pizaza",
+                "spaace",
+                "catvs",
+                "dogvs",
+                "pizzva",
+                "spacve",
+                "carts",
+                "dorgs",
+                "pirzza",
+                "sparce",
+
+
+                // Add more search queries here
+            ];
+
+            var randomSearch = searches[Math.floor(Math.random() * searches.length)];
+            var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
+            window.open(url, "_blank", "width=600,height=400");
+        }
+
+
+
+        function openRandomSearchMultipleTimesMobile() {
+            for (var i = 0; i < 30; i++) {
+                setTimeout(openRandomSearchMobile, 1000 * i); // Delay each search by 1 second
             }
         }
     </script>
 </head>
+
 <body>
     <style>
-        .btn{
+        body {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .btn {
             padding: 10px;
-            background-color: rgb(55, 167, 55);
+            background-color: rgb(92, 196, 92);
             color: white;
             border-radius: 10px;
             border: 2px solid transparent;
             box-shadow: 100px;
+            cursor: pointer;
+            height: 80px;
+            width: 250px;
+            margin: 10px;
+            font-size: 17px;
         }
-        @media (max-width: 767px) {
-			.btn {
-				padding: 0.75rem 1.5rem;
-                width: 40%;
-                height: 50%;
-                background-color: brown;
-			}
-		}
+
+        .btn:hover {
+            background-color: green;
+            border-bottom: 4px solid rgb(85, 107, 85);
+        }
+
+        .all {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
-    <h1> Lovepreet Singh Randhawa</h1>
-    <h1>Click the button to open random searches in a new window</h1>
-    <button class="btn" onclick="openRandomSearchMultipleTimes()">Open Searches</button>
+    <div class="all">
+        <h1 class="love"> Lovepreet Singh Randhawa</h1>
+        <h1>Click the button to open random searches in a new window</h1>
+        <button class="btn" onclick="openRandomSearchMultipleTimesPC()">Open Searches For PC <i
+                class="bi bi-laptop"></i></button>
+        <button class="btn" onclick="openRandomSearchMultipleTimesMobile()">Open Searches For Mobile <i
+                class="bi bi-phone"></i></button>
+    </div>
 </body>
+
 </html>
