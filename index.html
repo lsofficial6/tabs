@@ -83,7 +83,7 @@
 
             var randomSearch = searches[Math.floor(Math.random() * searches.length)];
             var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
-            window.open(url, "_blank", "width=600,height=400");
+            window.open(url, "_blank", "width=400,height=400");
         }
 
 
@@ -98,10 +98,7 @@
 
 <body>
     <style>
-        body {
-            text-align: center;
-            margin-top: 100px;
-        }
+       
 
         .btn {
             padding: 10px;
@@ -457,6 +454,35 @@
         <li></li>
         <li></li>
      </ul>
+
+
+
+
+     <!-- google anlytics firebase -->
+
+     <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyB-XEghXoCf85Qp6NANnwMXMHLoutp3gqU",
+          authDomain: "tabs-ce2dc.firebaseapp.com",
+          projectId: "tabs-ce2dc",
+          storageBucket: "tabs-ce2dc.appspot.com",
+          messagingSenderId: "633169525279",
+          appId: "1:633169525279:web:6ff0f8537e6add60ffb32a",
+          measurementId: "G-WR0Y2ST9Y3"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
 </body>
 
 </html>
