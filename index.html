@@ -419,13 +419,13 @@
 
             var randomSearch = searches[Math.floor(Math.random() * searches.length)] + '-' + today.getDate();
             var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
-            window.open(url, "_blank", "width=600,height=400");
+            window.open(url, "_blank", "width=100,height=100");
         }
 
 
 
         function openRandomSearchMultipleTimesPC() {
-            for (var i = 0; i < 30; i++) {
+            for (var i = 0; i < 60; i++) {
                 setTimeout(openRandomSearchPC, 0 * i); // Delay each search by 1 second
             }
         }
@@ -444,13 +444,13 @@
 
             var randomSearch = searches[Math.floor(Math.random() * searches.length)] + '-' + today.getDate();
             var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
-            window.open(url, "_blank", "width=400,height=400");
+            window.open(url, "_blank", "width=100,height=100");
         }
 
 
 
         function openRandomSearchMultipleTimesMobile() {
-            for (var i = 0; i < 20; i++) {
+            for (var i = 0; i < 40; i++) {
                 setTimeout(openRandomSearchMobile, 0 * i); // Delay each search by 1 second (replace 0 as 1000 for one second)
             }
         }
