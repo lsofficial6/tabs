@@ -407,49 +407,17 @@
 
 <!-- js for button onne click open all tabs -->
     <script>
+        var today = new Date();
         function openRandomSearchPC() {
             var searches = [
 
-                "vb",
-                "vvb",
-                "vfb",
-                "vbg",
-                "vbe",
-                "evb",
-                "veb",
-                "vbe",
-                "qvb",
-                "vwb",
-                "vbr",
-                "vbe",
-                "vbt",
-                "vbtt",
-                "vby",
-                "vbu",
-                "vbui",
-                "vbiasdsvdbfbgbg",
-                "avbiasdsvdbfbgbg",
-                "vabiasdsvdbfbgbg",
-                "vbaiasdsvdbfbgbg",
-                "vbiaasdsvdbfbgbg",
-                "vbiaasdsvdbfbgbg",
-                "vbiasadsvdbfbgbg",
-                "vbiasdasvdbfbgbg",
-                "vbiasdsavdbfbgbg",
-                "vbiasdsvadbfbgbg",
-                "vbiasdsvdabfbgbg",
-                "vbiasdsvdbafbgbg",
-                "vbiasdsvdbfabgbg",
-                "vbiasdsvdbfbagbg",
-                "vbiasdsvdbfbgabg",
-                "vbiasdsvdbfbgbag",
-                "vbiasdsvdbfbgbga",
+                "vb","vvb","vfb","vbg","vbe","evb","veb","vbe","qvb","vwb","vbr","vbe","vbt","vbtt","vby","vbu","vbui","vbiasdsvdbfbgbg","avbiasdsvdbfbgbg","vabiasdsvdbfbgbg","vbaiasdsvdbfbgbg","vbiaasdsvdbfbgbg","vbiaasdsvdbfbgbg","vbiasadsvdbfbgbg","vbiasdasvdbfbgbg","vbiasdsavdbfbgbg","vbiasdsvadbfbgbg","vbiasdsvdabfbgbg","vbiasdsvdbafbgbg","vbiasdsvdbfabgbg","vbiasdsvdbfbagbg","vbiasdsvdbfbgabg","vbiasdsvdbfbgbag","vbiasdsvdbfbgbga",
                 "jzvqkxhjxg", "vqjzgkxhjx", "gkxhjxvqjz", "hjxvqjzgkx", "xhjxvqjzgk", "zgkxhjxvqj", "qxhjxgkzvj", "kjzvqhxgxj", "hxgxkjzvqv", "vjzgkxhjxq", "gxkjzvqhxg", "qhxgxkjzvq", "zvjxgkqhjx", "qhjxzvjxgk", "gkqhjxzvjx", "xzvjxgkqhj", "hjxzvjxgkq", "jqhxgxkjzv", "xzgkqhjvxj", "kjxzvqgxhg", "gxhgkjxzvq", "vqgxhgkjxz", "hgkjxzvqgx", "xzvqgxhgkj", "jhqxgzvkxx", "gzvkxxjhqx", "kxxjhqxgzv", "vxjhqxgzvk", "qxgzvkxxjh", "vkxxjhqxgz", "zxjhqxgvkz", "gvkzxjhqxh", "qxhgvkzxjh", "hxgvkzxjq", "zkvxghjqwj", "ghjqwjkvx", "wjkvxghjq", "qvghjkwxzx", "jkwxzxqvgh", "zxqvghjkwx", "wxzxqvghjk", "ghjkwxzxqv", "vxghjqwjk", "jqwjkvxgh", "wjkvxghjq", "qvghjkwxzx", "jkwxzxqvgh", "zxqvghjkwx", "wxzxqvghjk", "ghjkwxzxqv", "vxghjqwjk", "jqwjkvxgh", "wjkvxghjq", "qvghjkwxzx", "jkwxzxqvgh", "zxqvghjkwx", "wxzxqvghjk", "ghjkwxzxqv",
 
                 // Add more search queries here
             ];
 
-            var randomSearch = searches[Math.floor(Math.random() * searches.length)];
+            var randomSearch = searches[Math.floor(Math.random() * searches.length)] + '-' + today.getDate();
             var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
             window.open(url, "_blank", "width=600,height=400");
         }
@@ -457,7 +425,7 @@
 
 
         function openRandomSearchMultipleTimesPC() {
-            for (var i = 0; i < 40; i++) {
+            for (var i = 0; i < 30; i++) {
                 setTimeout(openRandomSearchPC, 0 * i); // Delay each search by 1 second
             }
         }
@@ -465,10 +433,7 @@
         // sencond function for mobile
         function openRandomSearchMobile() {
             var searches = [
-                "cats", "dogs", "pizza", "space", "music", "casts", "dogss", "piszza", "spasce", "caats", "doags", "pizaza", "spaace", "catvs", "dogvs", "pizzva", "spacve", "carts",
-                "dorgs",
-                "pirzza",
-                "sparce",
+                "cats", "dogs", "pizza", "space", "music", "casts", "dogss", "piszza", "spasce", "caats", "doags", "pizaza", "spaace", "catvs", "dogvs", "pizzva", "spacve", "carts","dorgs","pirzza","sparce",
                 "sable", "doubtful", "mend", "sneeze", "fierce", "treat", "proud", "satisfy", "faint", "wonderful", "dramatic", "succeed", "fearless", "satisfy", "courageous", "hurt", "wonderful", "fierce", "doubtful", "sneeze", "proud", "mend", "faint", "treat", "sable", "doubtful", "mend", "sneeze", "fierce", "treat", "proud", "satisfy", "faint", "wonderful", "dramatic", "succeed", "fearless", "satisfy", "courageous", "hurt", "wonderful", "fierce", "doubtful", "sneeze", "proud", "mend", "faint", "treat",
                 "sable", "doubtful", "mend", "sneeze", "fierce", "treat", "proud", "satisfy", "faint", "wonderful", "dramatic", "succeed",
                 "fearless", "satisfy", "courageous", "hurt", "wonderful", "fierce", "doubtful", "sneeze", "proud", "mend", "faint", "treat"
@@ -477,7 +442,7 @@
                 // Add more search queries here
             ];
 
-            var randomSearch = searches[Math.floor(Math.random() * searches.length)];
+            var randomSearch = searches[Math.floor(Math.random() * searches.length)] + '-' + today.getDate();
             var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
             window.open(url, "_blank", "width=400,height=400");
         }
@@ -485,8 +450,8 @@
 
 
         function openRandomSearchMultipleTimesMobile() {
-            for (var i = 0; i < 40; i++) {
-                setTimeout(openRandomSearchMobile, 0 * i); // Delay each search by 1 second
+            for (var i = 0; i < 20; i++) {
+                setTimeout(openRandomSearchMobile, 0 * i); // Delay each search by 1 second (replace 0 as 1000 for one second)
             }
         }
     </script>
