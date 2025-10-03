@@ -1,195 +1,604 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Random Search</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-        integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
-
-
-</head>
-
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards Automation Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
-        .btn {
-            padding: 10px;
-            background-color: rgb(92, 196, 92);
-            color: white;
+        :root {
+            --primary: #0067b8;
+            --secondary: #107c10;
+            --accent: #ffb900;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0067b8 0%, #107c10 100%);
+            min-height: 100vh;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 12px 24px;
+            font-weight: 600;
             border-radius: 10px;
-            border: 2px solid transparent;
-            box-shadow: 100px;
-            cursor: pointer;
-            height: 80px;
-            width: 350px;
-            margin: 20px;
-            font-size: 17px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.3s ease;
         }
-
-        i {
-            font-size: 40px;
-            margin-left: 20px;
+        
+        .btn-primary:hover {
+            background-color: #005da6;
+            border-color: #005da6;
+            transform: scale(1.05);
         }
-
-        .btn:hover {
-            background-color: green;
-            border-bottom: 4px solid rgb(85, 107, 85);
-            color: white;
+        
+        .btn-success {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
-
-        .all {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        
+        .btn-success:hover {
+            background-color: #0e6e0e;
+            border-color: #0e6e0e;
+            transform: scale(1.05);
         }
-
-        .display-1,
-        .display-6 {
-            color: white;
-            margin-top: 20px;
+        
+        .btn-warning {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
-
-        @media screen and (max-width: 768px) {
-            .btn {
-                font-size: 14px;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
+        
+        .btn-warning:hover {
+            background-color: #e6a700;
+            border-color: #e6a700;
+            transform: scale(1.05);
         }
-
-
-        /* css code of BG */
-
-        @keyframes animate {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-                border-radius: 0;
-            }
-
-            100% {
-                transform: translateY(-1000px) rotate(720deg);
-                opacity: 0;
-                border-radius: 50%;
-            }
+        
+        .icon-large {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
-
-        .background {
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin: 15px 0;
+        }
+        
+        .progress-bar {
+            background-color: var(--accent);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -10px); }
+            100% { transform: translate(0, 0px); }
+        }
+        
+        .particles {
             position: fixed;
-            width: 100vw;
-            height: 100vh;
             top: 0;
             left: 0;
-            margin: 0;
-            padding: 0;
-            background: #4e54c8;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
             overflow: hidden;
         }
-
-        .background li {
+        
+        .particle {
             position: absolute;
-            display: block;
-            list-style: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            animation: animate 19s linear infinite;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float-particle linear infinite;
         }
-
-
-
-
-        .background li:nth-child(0) {
-            left: 4%;
-            width: 139px;
-            height: 139px;
-            bottom: -139px;
-            animation-delay: 1s;
+        
+        @keyframes float-particle {
+            to {
+                transform: translateY(-100vh);
+            }
         }
-
-        /* Add more CSS for background li:nth-child() here */
-
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-active {
+            background-color: #28a745;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-inactive {
+            background-color: #dc3545;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        
+        .settings-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .form-range {
+            width: 100%;
+        }
+        
+        .form-label {
+            color: var(--light);
+            font-weight: 500;
+        }
     </style>
-    <ul class="background">
-
-        <div class="all">
-            <h1 class="display-1"> Lovepreet Singh Randhawa</h1>
-            <h1 class="display-6">Click the button to open random searches in a new window</h1>
-            <button class="btn" id="myButtonPC" onclick="openRandomSearchMultipleTimesPC()">Open Searches For PC <i
-                    class="bi bi-laptop"></i></button>
-            <button class="btn" id="myButtonMobile" onclick="openRandomSearchMultipleTimesMobile()">Open Searches For Mobile <i
-                    class="bi bi-phone"></i></button>
-            <button class="btn" id="myButtonGitHub" onclick="openGitHubSiteMultipleTimes()">Open GitHub Site Multiple Times <i
-                    class="bi bi-github"></i></button>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 fw-bold mb-3">Rewards Automation Tool</h1>
+                    <p class="lead">Maximize your Microsoft Rewards points with our optimized automation solution</p>
+                </div>
+                
+                <div class="row g-4">
+                    <!-- PC Searches Card -->
+                    <div class="col-md-4">
+                        <div class="card h-100 p-4 text-center">
+                            <i class="bi bi-laptop icon-large floating"></i>
+                            <h3>PC Searches</h3>
+                            <p>Automate your desktop searches to earn points faster</p>
+                            <div class="progress">
+                                <div class="progress-bar" id="pc-progress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="mb-3">
+                                <span id="pc-status" class="status-indicator status-inactive"></span>
+                                <span id="pc-count">0/40 searches completed</span>
+                            </div>
+                            <button class="btn btn-primary w-100" id="start-pc">
+                                <i class="bi bi-play-circle"></i> Start PC Searches
+                            </button>
+                            <button class="btn btn-outline-light w-100 mt-2" id="stop-pc" disabled>
+                                <i class="bi bi-stop-circle"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Searches Card -->
+                    <div class="col-md-4">
+                        <div class="card h-100 p-4 text-center">
+                            <i class="bi bi-phone icon-large floating"></i>
+                            <h3>Mobile Searches</h3>
+                            <p>Complete mobile searches even on your desktop</p>
+                            <div class="progress">
+                                <div class="progress-bar" id="mobile-progress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="mb-3">
+                                <span id="mobile-status" class="status-indicator status-inactive"></span>
+                                <span id="mobile-count">0/30 searches completed</span>
+                            </div>
+                            <button class="btn btn-success w-100" id="start-mobile">
+                                <i class="bi bi-play-circle"></i> Start Mobile Searches
+                            </button>
+                            <button class="btn btn-outline-light w-100 mt-2" id="stop-mobile" disabled>
+                                <i class="bi bi-stop-circle"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- GitHub Card -->
+                    <div class="col-md-4">
+                        <div class="card h-100 p-4 text-center">
+                            <i class="bi bi-github icon-large floating"></i>
+                            <h3>GitHub Visits</h3>
+                            <p>Support the developer by visiting the GitHub repository</p>
+                            <div class="progress">
+                                <div class="progress-bar" id="github-progress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="mb-3">
+                                <span id="github-status" class="status-indicator status-inactive"></span>
+                                <span id="github-count">0/5 visits completed</span>
+                            </div>
+                            <button class="btn btn-warning w-100" id="start-github">
+                                <i class="bi bi-play-circle"></i> Start GitHub Visits
+                            </button>
+                            <button class="btn btn-outline-light w-100 mt-2" id="stop-github" disabled>
+                                <i class="bi bi-stop-circle"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Settings Panel -->
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h4 class="card-title"><i class="bi bi-gear"></i> Settings</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Delay Between Searches (ms)</label>
+                                <input type="range" class="form-range" min="500" max="5000" step="500" id="delay-setting" value="2000">
+                                <div class="text-center" id="delay-value">2000 ms</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Search Duration (seconds)</label>
+                                <input type="range" class="form-range" min="2" max="10" step="1" id="duration-setting" value="5">
+                                <div class="text-center" id="duration-value">5 seconds</div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch mt-4">
+                                    <input class="form-check-input" type="checkbox" id="auto-close" checked>
+                                    <label class="form-check-label" for="auto-close">Auto-close tabs</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="randomize" checked>
+                                    <label class="form-check-label" for="randomize">Randomize search terms</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h4><i class="bi bi-info-circle"></i> Important Instructions</h4>
+                        <ul>
+                            <li>Allow pop-ups for this site in your browser</li>
+                            <li>Keep this tab open while the automation is running</li>
+                            <li>Use appropriate delays to avoid detection</li>
+                            <li>Close all other Bing/Microsoft tabs before starting</li>
+                            <li>This tool is for educational purposes only</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-    </ul>
-
-    <!-- js for button onne click open all tabs -->
     <script>
-        var today = new Date();
-        function openRandomSearchPC() {
-            var searches = [
-    'dog', 'cat', 'world', 'space', 'love', 'fruit', 'computer', 'programming', 'music', 'movie',
-    'nature', 'food', 'history', 'art', 'science', 'technology', 'sports', 'travel', 'health', 'fitness',
-    'education', 'culture', 'business', 'finance', 'politics', 'celebrities', 'cars', 'books', 'games',
-    'photography', 'fashion', 'architecture', 'animals', 'gardening', 'cooking', 'recipes', 'movies',
-    'TV shows', 'social media', 'news'
-];
-
-
-            var randomSearch = searches[Math.floor(Math.random() * searches.length)] + '-' + today.getDate();
-            var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
-            window.open(url, "_blank");
-        }
-
-        function openRandomSearchMultipleTimesPC() {
-            for (var i = 0; i < 40; i++) {
-                setTimeout(openRandomSearchPC, 300 * i); // Delay each search by 1 second
+        // Configuration
+        const config = {
+            pcSearches: 40,
+            mobileSearches: 30,
+            githubVisits: 5,
+            delay: 2000,
+            searchDuration: 5000,
+            autoClose: true,
+            randomize: true
+        };
+        
+        // State tracking
+        const state = {
+            pc: {
+                running: false,
+                completed: 0,
+                interval: null
+            },
+            mobile: {
+                running: false,
+                completed: 0,
+                interval: null
+            },
+            github: {
+                running: false,
+                completed: 0,
+                interval: null
+            }
+        };
+        
+        // Search terms
+        const searchTerms = [
+            'weather today', 'news headlines', 'sports scores', 'movie reviews', 'recipe ideas',
+            'travel destinations', 'health tips', 'technology news', 'science discoveries', 'music charts',
+            'book recommendations', 'fashion trends', 'car reviews', 'home improvement', 'gardening tips',
+            'pet care', 'financial advice', 'educational resources', 'art exhibitions', 'local events',
+            'historical facts', 'space exploration', 'environmental issues', 'business news', 'celebrity gossip',
+            'video games', 'smartphone reviews', 'exercise routines', 'cooking techniques', 'DIY projects',
+            'photography tips', 'language learning', 'career advice', 'relationship tips', 'parenting advice',
+            'mental health', 'nutrition facts', 'meditation techniques', 'podcast recommendations', 'tv shows'
+        ];
+        
+        // Initialize particles
+        function initParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 20 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                particlesContainer.appendChild(particle);
             }
         }
-
-        // Function for mobile searches
-        function openRandomSearchMobile() {
-            var searches = [
-    'dog', 'cat', 'world', 'space', 'love', 'fruit', 'computer', 'programming', 'music', 'movie',
-    'nature', 'food', 'history', 'art', 'science', 'technology', 'sports', 'travel', 'health', 'fitness',
-    'education', 'culture', 'business', 'finance', 'politics', 'celebrities', 'cars', 'books', 'games',
-    'photography', 'fashion', 'architecture', 'animals', 'gardening', 'cooking', 'recipes', 'movies',
-    'TV shows', 'social media', 'news'
-];
-
-
-            var randomSearch = searches[Math.floor(Math.random() * searches.length)] + '-' + today.getDate();
-            var url = "https://www.bing.com/search?q=" + encodeURIComponent(randomSearch);
-            window.open(url, "_blank");
-        }
-
-        function openRandomSearchMultipleTimesMobile() {
-            for (var i = 0; i < 30; i++) {
-                setTimeout(openRandomSearchMobile, 100 * i); // Delay each search by 1 second
+        
+        // Get random search term
+        function getRandomSearchTerm() {
+            const today = new Date();
+            const dateStr = `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
+            
+            if (config.randomize) {
+                const randomIndex = Math.floor(Math.random() * searchTerms.length);
+                return `${searchTerms[randomIndex]} ${dateStr}`;
+            } else {
+                // Use sequential terms if not randomizing
+                const index = state.pc.completed % searchTerms.length;
+                return `${searchTerms[index]} ${dateStr}`;
             }
         }
-
-        // Function to open GitHub site multiple times
-        function openGitHubSiteMultipleTimes() {
-            for (var i = 0; i < 5; i++) {
-                setTimeout(function() {
-                    window.open("https://github.com/lsofficial6", "_blank");
-                }, 100 * i); // Delay each opening by 300 milliseconds
-            }
+        
+        // Update progress bars and counters
+        function updateProgress() {
+            // PC searches
+            const pcProgress = (state.pc.completed / config.pcSearches) * 100;
+            document.getElementById('pc-progress').style.width = `${pcProgress}%`;
+            document.getElementById('pc-count').textContent = `${state.pc.completed}/${config.pcSearches} searches completed`;
+            
+            // Mobile searches
+            const mobileProgress = (state.mobile.completed / config.mobileSearches) * 100;
+            document.getElementById('mobile-progress').style.width = `${mobileProgress}%`;
+            document.getElementById('mobile-count').textContent = `${state.mobile.completed}/${config.mobileSearches} searches completed`;
+            
+            // GitHub visits
+            const githubProgress = (state.github.completed / config.githubVisits) * 100;
+            document.getElementById('github-progress').style.width = `${githubProgress}%`;
+            document.getElementById('github-count').textContent = `${state.github.completed}/${config.githubVisits} visits completed`;
         }
+        
+        // Update status indicators
+        function updateStatus() {
+            // PC status
+            const pcStatus = document.getElementById('pc-status');
+            pcStatus.className = 'status-indicator ' + (state.pc.running ? 'status-active' : 'status-inactive');
+            
+            // Mobile status
+            const mobileStatus = document.getElementById('mobile-status');
+            mobileStatus.className = 'status-indicator ' + (state.mobile.running ? 'status-active' : 'status-inactive');
+            
+            // GitHub status
+            const githubStatus = document.getElementById('github-status');
+            githubStatus.className = 'status-indicator ' + (state.github.running ? 'status-active' : 'status-inactive');
+        }
+        
+        // Perform a single search
+        function performSearch(type) {
+            const searchTerm = getRandomSearchTerm();
+            const encodedTerm = encodeURIComponent(searchTerm);
+            let url;
+            
+            if (type === 'mobile') {
+                // Use a mobile user agent string in the URL (simulated)
+                url = `https://www.bing.com/search?q=${encodedTerm}&form=QBLH`;
+            } else {
+                url = `https://www.bing.com/search?q=${encodedTerm}`;
+            }
+            
+            // Open in a new tab
+            const newTab = window.open(url, '_blank');
+            
+            // Auto-close after delay if enabled
+            if (config.autoClose && newTab) {
+                setTimeout(() => {
+                    try {
+                        newTab.close();
+                    } catch (e) {
+                        console.log('Could not close tab:', e);
+                    }
+                }, config.searchDuration);
+            }
+            
+            // Update state
+            if (type === 'pc') {
+                state.pc.completed++;
+                if (state.pc.completed >= config.pcSearches) {
+                    stopPCSearches();
+                }
+            } else if (type === 'mobile') {
+                state.mobile.completed++;
+                if (state.mobile.completed >= config.mobileSearches) {
+                    stopMobileSearches();
+                }
+            }
+            
+            updateProgress();
+        }
+        
+        // Perform GitHub visit
+        function performGitHubVisit() {
+            window.open('https://github.com/lsofficial6', '_blank');
+            
+            state.github.completed++;
+            if (state.github.completed >= config.githubVisits) {
+                stopGitHubVisits();
+            }
+            
+            updateProgress();
+        }
+        
+        // Start PC searches
+        function startPCSearches() {
+            if (state.pc.running) return;
+            
+            state.pc.running = true;
+            state.pc.completed = 0;
+            updateStatus();
+            
+            document.getElementById('start-pc').disabled = true;
+            document.getElementById('stop-pc').disabled = false;
+            
+            // Perform first search immediately
+            performSearch('pc');
+            
+            // Set up interval for subsequent searches
+            state.pc.interval = setInterval(() => {
+                performSearch('pc');
+            }, config.delay);
+        }
+        
+        // Stop PC searches
+        function stopPCSearches() {
+            if (!state.pc.running) return;
+            
+            state.pc.running = false;
+            clearInterval(state.pc.interval);
+            updateStatus();
+            
+            document.getElementById('start-pc').disabled = false;
+            document.getElementById('stop-pc').disabled = true;
+        }
+        
+        // Start mobile searches
+        function startMobileSearches() {
+            if (state.mobile.running) return;
+            
+            state.mobile.running = true;
+            state.mobile.completed = 0;
+            updateStatus();
+            
+            document.getElementById('start-mobile').disabled = true;
+            document.getElementById('stop-mobile').disabled = false;
+            
+            // Perform first search immediately
+            performSearch('mobile');
+            
+            // Set up interval for subsequent searches
+            state.mobile.interval = setInterval(() => {
+                performSearch('mobile');
+            }, config.delay);
+        }
+        
+        // Stop mobile searches
+        function stopMobileSearches() {
+            if (!state.mobile.running) return;
+            
+            state.mobile.running = false;
+            clearInterval(state.mobile.interval);
+            updateStatus();
+            
+            document.getElementById('start-mobile').disabled = false;
+            document.getElementById('stop-mobile').disabled = true;
+        }
+        
+        // Start GitHub visits
+        function startGitHubVisits() {
+            if (state.github.running) return;
+            
+            state.github.running = true;
+            state.github.completed = 0;
+            updateStatus();
+            
+            document.getElementById('start-github').disabled = true;
+            document.getElementById('stop-github').disabled = false;
+            
+            // Perform first visit immediately
+            performGitHubVisit();
+            
+            // Set up interval for subsequent visits
+            state.github.interval = setInterval(() => {
+                performGitHubVisit();
+            }, config.delay);
+        }
+        
+        // Stop GitHub visits
+        function stopGitHubVisits() {
+            if (!state.github.running) return;
+            
+            state.github.running = false;
+            clearInterval(state.github.interval);
+            updateStatus();
+            
+            document.getElementById('start-github').disabled = false;
+            document.getElementById('stop-github').disabled = true;
+        }
+        
+        // Update settings from UI
+        function updateSettings() {
+            config.delay = parseInt(document.getElementById('delay-setting').value);
+            config.searchDuration = parseInt(document.getElementById('duration-setting').value) * 1000;
+            config.autoClose = document.getElementById('auto-close').checked;
+            config.randomize = document.getElementById('randomize').checked;
+            
+            document.getElementById('delay-value').textContent = `${config.delay} ms`;
+            document.getElementById('duration-value').textContent = `${config.searchDuration / 1000} seconds`;
+        }
+        
+        // Initialize the application
+        function init() {
+            initParticles();
+            updateProgress();
+            updateStatus();
+            
+            // Event listeners for buttons
+            document.getElementById('start-pc').addEventListener('click', startPCSearches);
+            document.getElementById('stop-pc').addEventListener('click', stopPCSearches);
+            
+            document.getElementById('start-mobile').addEventListener('click', startMobileSearches);
+            document.getElementById('stop-mobile').addEventListener('click', stopMobileSearches);
+            
+            document.getElementById('start-github').addEventListener('click', startGitHubVisits);
+            document.getElementById('stop-github').addEventListener('click', stopGitHubVisits);
+            
+            // Event listeners for settings
+            document.getElementById('delay-setting').addEventListener('input', updateSettings);
+            document.getElementById('duration-setting').addEventListener('input', updateSettings);
+            document.getElementById('auto-close').addEventListener('change', updateSettings);
+            document.getElementById('randomize').addEventListener('change', updateSettings);
+            
+            // Initialize settings display
+            updateSettings();
+        }
+        
+        // Start the application when the page loads
+        document.addEventListener('DOMContentLoaded', init);
     </script>
-
 </body>
-
 </html>
