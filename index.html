@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rewards Automation Tool</title>
+    <title>Rewards Automation Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
@@ -13,6 +13,7 @@
             --accent: #ffb900;
             --light: #f8f9fa;
             --dark: #212529;
+            --danger: #dc3545;
         }
         
         body {
@@ -78,6 +79,21 @@
         .btn-warning:hover {
             background-color: #e6a700;
             border-color: #e6a700;
+            transform: scale(1.05);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
             transform: scale(1.05);
         }
         
@@ -168,17 +184,114 @@
             color: var(--light);
             font-weight: 500;
         }
+        
+        .log-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 5px;
+            border-radius: 3px;
+        }
+        
+        .log-info {
+            background: rgba(0, 123, 255, 0.2);
+        }
+        
+        .log-success {
+            background: rgba(40, 167, 69, 0.2);
+        }
+        
+        .log-warning {
+            background: rgba(255, 193, 7, 0.2);
+        }
+        
+        .log-error {
+            background: rgba(220, 53, 69, 0.2);
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .preset-btn {
+            margin: 5px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 350px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
     
+    <!-- Notification Toast -->
+    <div class="notification card" id="notification">
+        <div class="card-body">
+            <h5 class="card-title" id="notification-title">Notification</h5>
+            <p class="card-text" id="notification-message">This is a notification message.</p>
+        </div>
+    </div>
+    
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-lg-12">
                 <div class="text-center mb-5">
-                    <h1 class="display-4 fw-bold mb-3">Rewards Automation Tool</h1>
+                    <h1 class="display-4 fw-bold mb-3">Rewards Automation Pro</h1>
                     <p class="lead">Maximize your Microsoft Rewards points with our optimized automation solution</p>
+                </div>
+                
+                <!-- Stats Row -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="total-searches">0</div>
+                            <div class="stats-label">Total Searches Today</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="points-earned">0</div>
+                            <div class="stats-label">Points Earned</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="time-saved">0</div>
+                            <div class="stats-label">Minutes Saved</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="stats-number" id="success-rate">100%</div>
+                            <div class="stats-label">Success Rate</div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="row g-4">
@@ -249,24 +362,56 @@
                     </div>
                 </div>
                 
+                <!-- Quick Actions -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h4><i class="bi bi-lightning"></i> Quick Actions</h4>
+                        <div class="d-flex flex-wrap">
+                            <button class="btn btn-primary preset-btn" data-pc="40" data-mobile="30" data-delay="1500">
+                                <i class="bi bi-rocket-takeoff"></i> Fast Mode
+                            </button>
+                            <button class="btn btn-success preset-btn" data-pc="40" data-mobile="30" data-delay="3000">
+                                <i class="bi bi-shield-check"></i> Safe Mode
+                            </button>
+                            <button class="btn btn-warning preset-btn" data-pc="20" data-mobile="15" data-delay="2000">
+                                <i class="bi bi-hourglass-split"></i> Quick Run
+                            </button>
+                            <button class="btn btn-danger w-100 mt-2" id="stop-all">
+                                <i class="bi bi-stop-fill"></i> Stop All Activities
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Settings Panel -->
-                <div class="card mt-5">
+                <div class="card mt-4">
                     <div class="card-body">
                         <h4 class="card-title"><i class="bi bi-gear"></i> Settings</h4>
                         
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label">Delay Between Searches (ms)</label>
                                 <input type="range" class="form-range" min="500" max="5000" step="500" id="delay-setting" value="2000">
                                 <div class="text-center" id="delay-value">2000 ms</div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label">Search Duration (seconds)</label>
                                 <input type="range" class="form-range" min="2" max="10" step="1" id="duration-setting" value="5">
                                 <div class="text-center" id="duration-value">5 seconds</div>
                             </div>
+                            <div class="col-md-3">
+                                <label class="form-label">PC Search Count</label>
+                                <input type="number" class="form-control" id="pc-count-setting" min="1" max="100" value="40">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Mobile Search Count</label>
+                                <input type="number" class="form-control" id="mobile-count-setting" min="1" max="100" value="30">
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
                             <div class="col-md-4">
-                                <div class="form-check form-switch mt-4">
+                                <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="auto-close" checked>
                                     <label class="form-check-label" for="auto-close">Auto-close tabs</label>
                                 </div>
@@ -275,6 +420,39 @@
                                     <label class="form-check-label" for="randomize">Randomize search terms</label>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="sound-effects" checked>
+                                    <label class="form-check-label" for="sound-effects">Sound effects</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="notifications" checked>
+                                    <label class="form-check-label" for="notifications">Notifications</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-outline-light w-100" id="reset-stats">
+                                    <i class="bi bi-arrow-clockwise"></i> Reset Statistics
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activity Log -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h4><i class="bi bi-list-check"></i> Activity Log</h4>
+                        <div class="log-container" id="log-container">
+                            <div class="log-entry log-info">Welcome to Rewards Automation Pro! Ready to start earning points.</div>
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-light" id="clear-log">
+                                <i class="bi bi-trash"></i> Clear Log
+                            </button>
+                            <button class="btn btn-sm btn-outline-light" id="export-log">
+                                <i class="bi bi-download"></i> Export Log
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -286,9 +464,10 @@
                         <ul>
                             <li>Allow pop-ups for this site in your browser</li>
                             <li>Keep this tab open while the automation is running</li>
-                            <li>Use appropriate delays to avoid detection</li>
+                            <li>Use appropriate delays to avoid detection (1500-3000ms recommended)</li>
                             <li>Close all other Bing/Microsoft tabs before starting</li>
                             <li>This tool is for educational purposes only</li>
+                            <li>Consider using "Safe Mode" for better reliability</li>
                         </ul>
                     </div>
                 </div>
@@ -297,7 +476,7 @@
     </div>
 
     <script>
-        // Configuration
+        // Enhanced Configuration
         const config = {
             pcSearches: 40,
             mobileSearches: 30,
@@ -305,10 +484,12 @@
             delay: 2000,
             searchDuration: 5000,
             autoClose: true,
-            randomize: true
+            randomize: true,
+            soundEffects: true,
+            notifications: true
         };
         
-        // State tracking
+        // Enhanced State tracking
         const state = {
             pc: {
                 running: false,
@@ -324,10 +505,18 @@
                 running: false,
                 completed: 0,
                 interval: null
-            }
+            },
+            stats: {
+                totalSearches: 0,
+                pointsEarned: 0,
+                timeSaved: 0,
+                successRate: 100,
+                failedSearches: 0
+            },
+            startTime: null
         };
         
-        // Search terms
+        // Enhanced Search terms
         const searchTerms = [
             'weather today', 'news headlines', 'sports scores', 'movie reviews', 'recipe ideas',
             'travel destinations', 'health tips', 'technology news', 'science discoveries', 'music charts',
@@ -336,7 +525,9 @@
             'historical facts', 'space exploration', 'environmental issues', 'business news', 'celebrity gossip',
             'video games', 'smartphone reviews', 'exercise routines', 'cooking techniques', 'DIY projects',
             'photography tips', 'language learning', 'career advice', 'relationship tips', 'parenting advice',
-            'mental health', 'nutrition facts', 'meditation techniques', 'podcast recommendations', 'tv shows'
+            'mental health', 'nutrition facts', 'meditation techniques', 'podcast recommendations', 'tv shows',
+            'current events', 'stock market', 'weather forecast', 'holiday destinations', 'job opportunities',
+            'home decor ideas', 'investment strategies', 'coding tutorials', 'fitness challenges', 'baking recipes'
         ];
         
         // Initialize particles
@@ -359,6 +550,64 @@
                 
                 particlesContainer.appendChild(particle);
             }
+        }
+        
+        // Logging functions
+        function logMessage(message, type = 'info') {
+            const logContainer = document.getElementById('log-container');
+            const logEntry = document.createElement('div');
+            logEntry.classList.add('log-entry', `log-${type}`);
+            
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            
+            // Limit log entries to prevent performance issues
+            if (logContainer.children.length > 100) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+        }
+        
+        // Show notification
+        function showNotification(title, message, type = 'info') {
+            if (!config.notifications) return;
+            
+            const notification = document.getElementById('notification');
+            const notificationTitle = document.getElementById('notification-title');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            // Set background based on type
+            notification.className = 'notification card';
+            if (type === 'success') {
+                notification.classList.add('border-success');
+            } else if (type === 'warning') {
+                notification.classList.add('border-warning');
+            } else if (type === 'error') {
+                notification.classList.add('border-danger');
+            } else {
+                notification.classList.add('border-primary');
+            }
+            
+            notification.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Play sound effect
+        function playSound(type) {
+            if (!config.soundEffects) return;
+            
+            // In a real implementation, you would play actual sound files
+            // For this example, we'll just log the sound event
+            console.log(`Playing sound: ${type}`);
         }
         
         // Get random search term
@@ -392,6 +641,28 @@
             const githubProgress = (state.github.completed / config.githubVisits) * 100;
             document.getElementById('github-progress').style.width = `${githubProgress}%`;
             document.getElementById('github-count').textContent = `${state.github.completed}/${config.githubVisits} visits completed`;
+            
+            // Update stats
+            updateStats();
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const totalSearches = state.pc.completed + state.mobile.completed;
+            document.getElementById('total-searches').textContent = totalSearches;
+            
+            // Calculate points (5 points per search on average)
+            const points = totalSearches * 5;
+            document.getElementById('points-earned').textContent = points;
+            
+            // Calculate time saved (assuming 10 seconds per manual search)
+            const timeSaved = Math.floor(totalSearches * 10 / 60);
+            document.getElementById('time-saved').textContent = timeSaved;
+            
+            // Calculate success rate
+            const successRate = state.stats.failedSearches > 0 ? 
+                100 - Math.floor((state.stats.failedSearches / totalSearches) * 100) : 100;
+            document.getElementById('success-rate').textContent = `${successRate}%`;
         }
         
         // Update status indicators
@@ -425,13 +696,18 @@
             // Open in a new tab
             const newTab = window.open(url, '_blank');
             
+            // Log the search
+            logMessage(`Performed ${type} search: "${searchTerm}"`, 'info');
+            
             // Auto-close after delay if enabled
             if (config.autoClose && newTab) {
                 setTimeout(() => {
                     try {
                         newTab.close();
+                        logMessage(`Closed ${type} search tab`, 'success');
                     } catch (e) {
-                        console.log('Could not close tab:', e);
+                        logMessage(`Could not close ${type} search tab`, 'warning');
+                        state.stats.failedSearches++;
                     }
                 }, config.searchDuration);
             }
@@ -441,11 +717,15 @@
                 state.pc.completed++;
                 if (state.pc.completed >= config.pcSearches) {
                     stopPCSearches();
+                    showNotification('PC Searches Complete', 'All PC searches have been completed successfully!', 'success');
+                    playSound('success');
                 }
             } else if (type === 'mobile') {
                 state.mobile.completed++;
                 if (state.mobile.completed >= config.mobileSearches) {
                     stopMobileSearches();
+                    showNotification('Mobile Searches Complete', 'All mobile searches have been completed successfully!', 'success');
+                    playSound('success');
                 }
             }
             
@@ -455,10 +735,13 @@
         // Perform GitHub visit
         function performGitHubVisit() {
             window.open('https://github.com/lsofficial6', '_blank');
+            logMessage('Opened GitHub repository', 'info');
             
             state.github.completed++;
             if (state.github.completed >= config.githubVisits) {
                 stopGitHubVisits();
+                showNotification('GitHub Visits Complete', 'All GitHub visits have been completed!', 'success');
+                playSound('success');
             }
             
             updateProgress();
@@ -474,6 +757,10 @@
             
             document.getElementById('start-pc').disabled = true;
             document.getElementById('stop-pc').disabled = false;
+            
+            logMessage('Started PC searches', 'info');
+            showNotification('PC Searches Started', 'PC searches are now running in the background.', 'info');
+            playSound('start');
             
             // Perform first search immediately
             performSearch('pc');
@@ -494,6 +781,10 @@
             
             document.getElementById('start-pc').disabled = false;
             document.getElementById('stop-pc').disabled = true;
+            
+            logMessage('Stopped PC searches', 'info');
+            showNotification('PC Searches Stopped', 'PC searches have been stopped.', 'warning');
+            playSound('stop');
         }
         
         // Start mobile searches
@@ -506,6 +797,10 @@
             
             document.getElementById('start-mobile').disabled = true;
             document.getElementById('stop-mobile').disabled = false;
+            
+            logMessage('Started mobile searches', 'info');
+            showNotification('Mobile Searches Started', 'Mobile searches are now running in the background.', 'info');
+            playSound('start');
             
             // Perform first search immediately
             performSearch('mobile');
@@ -526,6 +821,10 @@
             
             document.getElementById('start-mobile').disabled = false;
             document.getElementById('stop-mobile').disabled = true;
+            
+            logMessage('Stopped mobile searches', 'info');
+            showNotification('Mobile Searches Stopped', 'Mobile searches have been stopped.', 'warning');
+            playSound('stop');
         }
         
         // Start GitHub visits
@@ -538,6 +837,10 @@
             
             document.getElementById('start-github').disabled = true;
             document.getElementById('stop-github').disabled = false;
+            
+            logMessage('Started GitHub visits', 'info');
+            showNotification('GitHub Visits Started', 'GitHub visits are now running.', 'info');
+            playSound('start');
             
             // Perform first visit immediately
             performGitHubVisit();
@@ -558,17 +861,96 @@
             
             document.getElementById('start-github').disabled = false;
             document.getElementById('stop-github').disabled = true;
+            
+            logMessage('Stopped GitHub visits', 'info');
+            showNotification('GitHub Visits Stopped', 'GitHub visits have been stopped.', 'warning');
+            playSound('stop');
+        }
+        
+        // Stop all activities
+        function stopAllActivities() {
+            stopPCSearches();
+            stopMobileSearches();
+            stopGitHubVisits();
+            
+            logMessage('Stopped all activities', 'warning');
+            showNotification('All Activities Stopped', 'All automation activities have been stopped.', 'warning');
+            playSound('stop');
+        }
+        
+        // Apply preset configuration
+        function applyPreset(pcCount, mobileCount, delay) {
+            config.pcSearches = pcCount;
+            config.mobileSearches = mobileCount;
+            config.delay = delay;
+            
+            document.getElementById('pc-count-setting').value = pcCount;
+            document.getElementById('mobile-count-setting').value = mobileCount;
+            document.getElementById('delay-setting').value = delay;
+            document.getElementById('delay-value').textContent = `${delay} ms`;
+            
+            logMessage(`Applied preset: PC=${pcCount}, Mobile=${mobileCount}, Delay=${delay}ms`, 'info');
+            showNotification('Preset Applied', 'Configuration has been updated with the selected preset.', 'success');
+        }
+        
+        // Reset statistics
+        function resetStatistics() {
+            state.stats = {
+                totalSearches: 0,
+                pointsEarned: 0,
+                timeSaved: 0,
+                successRate: 100,
+                failedSearches: 0
+            };
+            
+            updateStats();
+            logMessage('Statistics reset', 'info');
+            showNotification('Statistics Reset', 'All statistics have been reset to zero.', 'info');
+        }
+        
+        // Clear activity log
+        function clearLog() {
+            document.getElementById('log-container').innerHTML = '';
+            logMessage('Activity log cleared', 'info');
+        }
+        
+        // Export activity log
+        function exportLog() {
+            const logContainer = document.getElementById('log-container');
+            const logText = Array.from(logContainer.children)
+                .map(entry => entry.textContent)
+                .join('\n');
+            
+            const blob = new Blob([logText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rewards-automation-log-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            logMessage('Activity log exported', 'success');
+            showNotification('Log Exported', 'Activity log has been downloaded.', 'success');
         }
         
         // Update settings from UI
         function updateSettings() {
             config.delay = parseInt(document.getElementById('delay-setting').value);
             config.searchDuration = parseInt(document.getElementById('duration-setting').value) * 1000;
+            config.pcSearches = parseInt(document.getElementById('pc-count-setting').value);
+            config.mobileSearches = parseInt(document.getElementById('mobile-count-setting').value);
             config.autoClose = document.getElementById('auto-close').checked;
             config.randomize = document.getElementById('randomize').checked;
+            config.soundEffects = document.getElementById('sound-effects').checked;
+            config.notifications = document.getElementById('notifications').checked;
             
             document.getElementById('delay-value').textContent = `${config.delay} ms`;
             document.getElementById('duration-value').textContent = `${config.searchDuration / 1000} seconds`;
+            
+            // Update progress bars with new targets
+            updateProgress();
         }
         
         // Initialize the application
@@ -587,14 +969,37 @@
             document.getElementById('start-github').addEventListener('click', startGitHubVisits);
             document.getElementById('stop-github').addEventListener('click', stopGitHubVisits);
             
+            document.getElementById('stop-all').addEventListener('click', stopAllActivities);
+            
+            // Event listeners for preset buttons
+            document.querySelectorAll('.preset-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const pcCount = parseInt(this.getAttribute('data-pc'));
+                    const mobileCount = parseInt(this.getAttribute('data-mobile'));
+                    const delay = parseInt(this.getAttribute('data-delay'));
+                    applyPreset(pcCount, mobileCount, delay);
+                });
+            });
+            
             // Event listeners for settings
             document.getElementById('delay-setting').addEventListener('input', updateSettings);
             document.getElementById('duration-setting').addEventListener('input', updateSettings);
+            document.getElementById('pc-count-setting').addEventListener('change', updateSettings);
+            document.getElementById('mobile-count-setting').addEventListener('change', updateSettings);
             document.getElementById('auto-close').addEventListener('change', updateSettings);
             document.getElementById('randomize').addEventListener('change', updateSettings);
+            document.getElementById('sound-effects').addEventListener('change', updateSettings);
+            document.getElementById('notifications').addEventListener('change', updateSettings);
+            
+            // Event listeners for utility buttons
+            document.getElementById('reset-stats').addEventListener('click', resetStatistics);
+            document.getElementById('clear-log').addEventListener('click', clearLog);
+            document.getElementById('export-log').addEventListener('click', exportLog);
             
             // Initialize settings display
             updateSettings();
+            
+            logMessage('Rewards Automation Pro initialized successfully', 'success');
         }
         
         // Start the application when the page loads
